@@ -69,7 +69,7 @@ Get number of samples by MB SHH subtype
 table(subtypes$molecular_subtype)
 ```
 
-Load methylation data and filter for ids in `mb_shh_subtypes`
+Load methylation data and filter for ids in `subtypes`
 
 ```{r load methyl}
 methyl <- readRDS(methyl_file)
