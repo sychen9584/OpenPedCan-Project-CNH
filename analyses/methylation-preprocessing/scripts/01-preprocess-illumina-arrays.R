@@ -48,14 +48,6 @@ base_dir <- opt$base_dir
 controls_present <- opt$controls_present
 snp_filter <- opt$snp_filter
 
-# establish base dir
-root_dir <- rprojroot::find_root(rprojroot::has_dir(".git"))
-
-# Set path to module, data and results directories
-module_dir <- file.path(root_dir, "analyses", "methylation-preprocessing")
-data_dir <- file.path(module_dir, "data")
-results_dir <- file.path(module_dir, "results")
-
 # Create results folder if it doesn't exist
 if (!dir.exists(results_dir)) {
   dir.create(results_dir)
@@ -67,16 +59,12 @@ message("===============================================")
 message(c("Preprocessing ", dataset, " sample array data files..."))
 message("===============================================\n")
 
-# Check of the array data sub-directory exists
-array_data_dir <- file.path(data_dir, dataset)
-stopifnot(dir.exists(array_data_dir))
-
 ########################### Read sample array data  ############################
 message("Reading sample array data files...\n")
 
 # load array data into a RGChannelSet object
 RGset <- suppressWarnings(
-  minfi::read.metharray.exp(base = base_dir, verbose = TRUE, force = TRUE)
+  minfi::read.metharray.exp(base = base_dir, verbose = TRUE, force = TRUE, recursive = TRUE)
 )
 
 ####################### Pre-processing and normalization ########################
@@ -118,22 +106,19 @@ message("Generate results...\n")
 message("- Writing m-values matrix to file...\n")
 GRset %>% minfi::getM() %>% as.data.frame() %>% 
   tibble::rownames_to_column("Probe_ID") %>% tibble::as_tibble() %>% 
-  readr::write_rds(file.path(results_dir, 
-                             paste0(dataset, "-methyl-m-values.rds")))
+  readr::write_rds("methylation-methyl-m-values.rds")
 
 # get methylation beta-values
 message("- Writing beta-values matrix to file...\n")
 GRset %>% minfi::getBeta() %>% as.data.frame() %>% 
   tibble::rownames_to_column("Probe_ID") %>% tibble::as_tibble() %>% 
-  readr::write_rds(file.path(results_dir, 
-                             paste0(dataset, "-methyl-beta-values.rds")))
+  readr::write_rds("methylation-methyl-beta-values.rds")
 
 # get copy number values
 message("- Writing cn-values matrix to file...\n")
 GRset %>% minfi::getCN() %>% as.data.frame() %>% 
   tibble::rownames_to_column("Probe_ID") %>% tibble::as_tibble() %>% 
-  readr::write_rds(file.path(results_dir, 
-                             paste0(dataset, "-methyl-cn-values.rds")))
+  readr::write_rds("methylation-methyl-cn-values.rds")
 
 # delete GenomicRatioSet object to free memory
 rm(GRset)
