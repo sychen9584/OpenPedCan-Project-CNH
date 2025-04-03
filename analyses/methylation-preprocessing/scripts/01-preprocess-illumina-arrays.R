@@ -48,11 +48,6 @@ base_dir <- opt$base_dir
 controls_present <- opt$controls_present
 snp_filter <- opt$snp_filter
 
-# Create results folder if it doesn't exist
-if (!dir.exists(results_dir)) {
-  dir.create(results_dir)
-}
-
 # get analysis cancer type from arrays base_dir
 dataset <- basename(base_dir)
 message("===============================================")
