@@ -126,7 +126,7 @@ message("Extracting beta-values")
 beta_value <- GRset %>% minfi::getBeta() %>% as.data.frame() %>%
   tibble::rownames_to_column("Probe_ID")
 
-beta_value <- data.table::setnames(m_value, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
+beta_value <- data.table::setnames(beta_value, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
 
 # write output file
 readr::write_rds(beta_value, beta_value_file)
@@ -135,7 +135,7 @@ message("Extracting copy number values")
 cn_value <- GRset %>% minfi::getCN() %>% as.data.frame() %>%
   tibble::rownames_to_column("Probe_ID")
 
-cn_value <- data.table::setnames(m_value, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
+cn_value <- data.table::setnames(cn_value, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
 
 # write output file
 readr::write_rds(cn_value, cn_value_file)
