@@ -50,7 +50,7 @@ base_dir <- opt$base_dir
 controls_present <- opt$controls_present
 snp_filter <- opt$snp_filter
 
-# read manifest file_name and get Bioassay_ID columns
+# read manifest to obtain the IDAT prefix from the `file_name` and its matched `Bioassay_ID` column
 man_df <- read.table(file = opt$manifest_file, sep = '\t', header = TRUE)
 man_df <- man_df %>% select(all_of(c("file_name", "Bioassay_ID"))) %>%
   filter(!grepl("_Red.", file_name))
