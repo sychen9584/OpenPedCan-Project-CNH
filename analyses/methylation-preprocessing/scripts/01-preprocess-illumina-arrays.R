@@ -99,6 +99,15 @@ if (snp_filter) {
     minfi::dropLociWithSnps(snps=c("SBE","CpG"), maf=0)
 }
 
+######################## Calculate detection p-values #########################
+message("\nCalculating detection p-values...\n")
+
+detP <- minfi::detectionP(GRset)
+
+
+
+
+
 ############################## Generate results ###############################
 message("Generate results...\n")
 
@@ -106,8 +115,9 @@ message("Generate results...\n")
 # from the GenomicRatioSet object
 
 # set up output file names
-m_value_file <- paste0(dataset, "-methylation-methyl-m-values.rds")
-beta_value_file <- paste0(dataset, "-methylation-methyl-beta-values.rds")
+m_value_file <- paste0(dataset, "-methylation-methyl-m-values-unmasked.rds")
+m_value_file_masked <- paste0(dataset, "-methylation-methyl-m-values-masked.rds")
+beta_value_file <- paste0(dataset, "-methylation-methyl-beta-values-masked.rds")
 cn_value_file <- paste0(dataset, "-methylation-methyl-cn-values.rds")
 
 message("Extracting m values")
@@ -121,14 +131,29 @@ m_value <- data.table::setnames(m_value, man_df$file_name, man_df$Bioassay_ID, s
 # write output file
 readr::write_rds(m_value, m_value_file)
 
+##masking is optional for m values -- can generate masked and unmasked matrices
+
+m_value_masked <- m_value
+m_value_masked[detP > 0.05] <- NA  ##this p value threshold could be added as an option later, but 0.05 is standard 
+
+m_value_masked <- data.table::setnames(m_value_masked, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
+
+# write output file
+readr::write_rds(m_value_masked, m_value_file_masked)
+
 message("Extracting beta-values")
+
 beta_value <- GRset %>% minfi::getBeta() %>% as.data.frame() %>%
   tibble::rownames_to_column("Probe_ID")
 
-beta_value <- data.table::setnames(beta_value, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
+
+# apply masking -- #should ALWAYS be done for B values 
+beta_values_masked <- beta_values
+beta_values_masked[detP > 0.05] <- NA
+beta_values_masked <- data.table::setnames(beta_values_masked, man_df$file_name, man_df$Bioassay_ID, skip_absent = TRUE)
 
 # write output file
-readr::write_rds(beta_value, beta_value_file)
+readr::write_rds(beta_values_masked, beta_value_file)
 
 message("Extracting copy number values")
 cn_value <- GRset %>% minfi::getCN() %>% as.data.frame() %>%
