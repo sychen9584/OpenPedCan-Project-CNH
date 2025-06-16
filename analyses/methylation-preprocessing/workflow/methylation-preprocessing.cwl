@@ -34,7 +34,8 @@ inputs:
 
 outputs:
   beta_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/beta_values }
-  m_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values }
+  m_values_unmasked: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values_unmasked }
+  m_values_masked: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values_masked }
   cn_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/cn_values }
   
 steps:
