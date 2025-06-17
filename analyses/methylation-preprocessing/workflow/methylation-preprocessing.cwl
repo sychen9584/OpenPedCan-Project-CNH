@@ -34,7 +34,8 @@ inputs:
 
 outputs:
   beta_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/beta_values }
-  m_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values }
+  m_values_unmasked: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values_unmasked }
+  m_values_masked: {type: 'File[]', outputSource: preprocess_illumina_arrays/m_values_masked }
   cn_values: {type: 'File[]', outputSource: preprocess_illumina_arrays/cn_values }
   
 steps:
@@ -56,6 +57,6 @@ steps:
       snp_filter: snp_filter
       ram: ram
       cores: cores
-    out: [beta_values, m_values, cn_values]
+    out: [beta_values, m_values_masked, m_values_unmasked, cn_values]
   
 

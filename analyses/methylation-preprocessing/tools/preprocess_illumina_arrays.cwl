@@ -38,11 +38,15 @@ outputs:
   beta_values:
     type: File
     outputBinding:
-      glob: '*-methyl-beta-values.rds'
-  m_values:
+      glob: '*-methylation-methyl-beta-values-masked.rds'
+  m_values_unmasked:
     type: File
     outputBinding:
-      glob: '*-methyl-m-values.rds'
+      glob: '*-methylation-methyl-m-values-unmasked.rds'
+  m_values_masked:
+    type: File
+    outputBinding:
+      glob: '*-methylation-methyl-m-values-masked.rds'
   cn_values:
     type: File
     outputBinding:
