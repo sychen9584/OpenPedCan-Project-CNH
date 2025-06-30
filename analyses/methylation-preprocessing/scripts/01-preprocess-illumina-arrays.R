@@ -118,10 +118,10 @@ message("Generate results...\n")
 # from the GenomicRatioSet object
 
 # set up output file names
-m_value_file <- paste0(dataset, "-methylation-methyl-m-values-unmasked.rds")
-m_value_file_masked <- paste0(dataset, "-methylation-methyl-m-values-masked.rds")
-beta_value_file <- paste0(dataset, "-methylation-methyl-beta-values-masked.rds")
-cn_value_file <- paste0(dataset, "-methylation-methyl-cn-values.rds")
+m_value_file <- paste0(dataset, "-methyl-m-values-unmasked.rds")
+m_value_file_masked <- paste0(dataset, "-methyl-m-values-masked.rds")
+beta_value_file <- paste0(dataset, "-methyl-beta-values-masked.rds")
+cn_value_file <- paste0(dataset, "-methyl-cn-values.rds")
 
 message("Extracting m values")
 
