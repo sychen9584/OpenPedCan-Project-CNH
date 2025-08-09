@@ -2,7 +2,33 @@
 # Date: 2025-08-08
 # Compare immune cell proportions between medulloblastoma subtypes
 
+####### Analysis summary #######
+# - Used quanTIseq results as its scores can be compared across cancer subtypes 
+#   unlike XCell per the documentation.
 
+# - Most of the deconvoluted cells are labeled as uncharacterized (~90%). I dropped them and 
+#   renormalized the fractions of remaining cell types.
+
+# - PCA, correlation, and PERMNOVA test suggest that immune cells significantly distribute
+#   differently across mb subtypes
+
+# - Pairwise wilcoxon tests and visualizations (violin+boxplot & stacked barplot) indicate
+#   higher distribution of:
+#   - myeloid dendritic cells in WNT
+#   - B cells in SHH
+#   - monocytes in group3
+#   - NK cells in group4
+
+####### Output files ########
+#   medulloblastoma_pca.png 
+#   medulloblastoma_cor_heatmap.png
+#   medulloblastoma_stacked_barplot.png
+#   medulloblastoma_violin_boxplot.png 
+#   medulloblastoma_parwise_significance.png - effect sizes for each comparison with significance annotated
+#   medulloblastoma_violin_boxplot_significance.pdf - violin boxplots with significance annotated
+#   medulloblastoma_pairwise_stats.csv
+
+### MAIN ANALYSIS ###
 ####### Load libraries #######
 
 suppressPackageStartupMessages({
@@ -126,7 +152,7 @@ viz3 <- mb_filtered %>%
   labs(x = "Medulloblastoma subtype", y = "Proportion of cell types") + theme_classic() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 viz3
-ggsave("analyses/immune-deconv/results/medulloblastoma_boxplot_violin.png",
+ggsave("analyses/immune-deconv/results/medulloblastoma_violing_boxplot.png",
        plot = viz3, width=10, height=6, dpi = 300)
 
 
@@ -194,6 +220,8 @@ pairwise_stats <- pw_tbl %>%
             by = c("cell_type","group1","group2")) %>%
   arrange(cell_type, -effsize)
 
+readr::write_csv(pairwise_stats, file = "analyses/immune-deconv/results/medulloblastoma_pairwise_stats.csv")
+
 ##### Additional visualizations after statistical tests ######
 # viz 5: Heatmap of effect sizes with significance overlay
 viz_5_df <- pairwise_stats %>%
@@ -211,7 +239,7 @@ viz5 <- ggplot(viz_5_df, aes(x = comp, y = cell_type, fill = effsize)) +
 
 viz5
 
-ggsave("analyses/immune-deconv/results/medulloblastoma_pairwise_significant.png",
+ggsave("analyses/immune-deconv/results/medulloblastoma_pairwise_significance.png",
        plot = viz5, width = 8, height = 6, dpi = 300)
 
 # viz 6: update viz 3 with significance
