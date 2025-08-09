@@ -24,6 +24,7 @@ https://github.com/AlexsLemonade/OpenPBTA-analysis/issues/398
 https://github.com/AlexsLemonade/OpenPBTA-analysis/issues/623
 https://github.com/AlexsLemonade/OpenPBTA-analysis/issues/825
 https://github.com/AlexsLemonade/OpenPBTA-analysis/issues/808
+https://github.com/sychen9584/OpenPedCan-Project-CNH/pull/1
 
 ### Input files
 ```
